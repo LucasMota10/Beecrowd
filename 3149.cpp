@@ -1,52 +1,34 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int main(){
-    int med_temp, num; cin >> med_temp >> num;
-    vector<int> tempo(1100);
-    vector<string> nome(1100,"aaaaa");
+int main() {
+    int med_temp, num;
+    cin >> med_temp >> num;
 
-    for(int i = 0;i<num;i++){
-        int a1, a2;
+    vector<pair<int, string>> relatos;
+
+    for (int i = 0; i < num; i++) {
+        int horas, minutos;
         char name[150];
-        scanf("%d:%d",&a1,&a2);
+        scanf("%d:%d", &horas, &minutos);
         scanf(" %s", name);
-        a1 = a1*60;
-        a1 = a1+a2;
 
-        if(a1 >= 24*60-med_temp && a1 <= 24*60){
-            tempo.push_back(a1);
-            nome.push_back(name);
-        }else{
-            if(a1 >= 0 && a1 <= med_temp){
-                a1+= 24*60;
-                tempo.push_back(a1);
-                nome.push_back(name);
+        int total_minutos = horas * 60 + minutos;
+
+        if ((total_minutos >= 24 * 60 - med_temp && total_minutos <= 24 * 60) ||
+            (total_minutos >= 0 && total_minutos <= med_temp)) {
+            if (total_minutos <= med_temp) {
+                total_minutos += 24 * 60;
             }
-        }
-        name[0] = '\0';   
-    }
-
-    for(int i = 0;i<nome.size();i++){
-         int aux;
-         string aux2;
-        for(int j = i+1;j<nome.size();j++){
-            if(tempo[i] > tempo[j]){
-               aux = tempo[i];
-               aux2 = nome[i];
-               tempo[i] = tempo[j];
-               nome[i] = nome[j];
-               tempo[j] = aux;
-               nome[j] = aux2;
-            }
+            relatos.emplace_back(total_minutos, string(name));
         }
     }
 
-    for(int i = 0;i<nome.size();i++){
-        if(nome[i] != "aaaaa"){
-            cout << nome[i] << endl;
-        }
-        
+    sort(relatos.begin(), relatos.end());
+
+    for (const auto& relato : relatos) {
+        cout << relato.second << endl;
     }
 
+    return 0;
 }
